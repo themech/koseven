@@ -573,6 +573,9 @@ class Kohana_ORM extends Model implements serializable {
 		// Store only information about the object
 		foreach (['_primary_key_value', '_object', '_changed', '_loaded', '_saved', '_sorting', '_original_values'] as $var)
 		{
+			// this causes (de)serialization issues when an object is used in both _object and _original_values vars
+			// it this case if an object is shared between those two, it will be serialized in _original_values as a reference
+			// and cause deserialization issues.php. $data[$var] = serialize($this->{$var}) would be a dirty workaround here. 
 			$data[$var] = $this->{$var};
 		}
 
