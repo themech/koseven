@@ -148,7 +148,7 @@ Kohana::modules([
  * If you have not defined a cookie salt in your Cookie class then
  * uncomment the line below and define a preferrably long salt.
  */
-// Cookie::$salt = NULL;
+Cookie::$salt = '2139821639u2yhrd3912u';
 /**
  * Cookie HttpOnly directive
  * If set to true, disallows cookies to be accessed from JavaScript
