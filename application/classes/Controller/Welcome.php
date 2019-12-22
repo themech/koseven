@@ -2,13 +2,20 @@
 
 class Controller_Welcome extends Controller {
 
-    public function action_login() {
+    public function action_login()
+    {
         $status = Auth::instance()->login('newadmin' ,'somepass', true);
         if ($status) {
             $this->redirect('welcome/index');
         } else {
             $this->response->body('login failed!');
         }
+    }
+
+    public function action_logout()
+    {
+    	Auth::instance()->logout(TRUE);
+    	$this->redirect('welcome/index');
     }
 
 	public function action_index()
@@ -20,9 +27,9 @@ class Controller_Welcome extends Controller {
             echo $e."<br/>";
         }
         if (!$user) {
-			$this->response->body('hello, anon user!');
+			$this->response->body('hello, anon user!<br/><a href="/welcome/login">login</a><br/><a href="/welcome/register">register user</a>');
         } else {
-        	$this->response->body('hello, ' . $user->username);
+        	$this->response->body('hello, ' . $user->username . '.<br/><a href="/welcome/logout">logout</a>');
         }
 
 	}
