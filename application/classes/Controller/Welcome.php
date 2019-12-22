@@ -20,7 +20,7 @@ class Controller_Welcome extends Controller {
 
 	public function action_index()
 	{
-		$user = null;
+        $user = null;
         try {
             $user = Auth::instance()->get_user();
         } catch (Exception $e) {
@@ -31,12 +31,11 @@ class Controller_Welcome extends Controller {
         } else {
         	$this->response->body('hello, ' . $user->username . '.<br/><a href="/welcome/logout">logout</a>');
         }
-
 	}
 
 	public function action_register()
 	{
-		$user = ORM::factory('User');
+        $user = ORM::factory('User');
         $user->where('username', '=', 'newadmin')->find();
         if (!$user->loaded()) {
             $user = ORM::factory('user');
@@ -57,7 +56,6 @@ class Controller_Welcome extends Controller {
         	$this->response->body('user exists');
 
         }
-
 	}
 
 } // End Welcome
