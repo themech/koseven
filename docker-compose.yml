@@ -17,7 +17,7 @@ services:
       - .:/app
       - ./site.conf:/etc/nginx/conf.d/default.conf:ro
   php:
-    image: motoszkola-php
+    image: custom-php
     build:
       context: .
       dockerfile: Dockerfile-php
