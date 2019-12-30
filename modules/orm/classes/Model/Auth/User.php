@@ -92,6 +92,10 @@ class Model_Auth_User extends ORM {
 
 			// Save the user
 			$this->update();
+
+			// reload the user so the logins is not referencing the Database_Expression anymore
+			// otherwise it will be serialized to a json in a session and lead to errors
+			$this->reload();
 		}
 	}
 

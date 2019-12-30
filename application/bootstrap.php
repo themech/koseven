@@ -110,9 +110,21 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  caching     enable or disable internal caching                 FALSE
  * - boolean  expose      set the X-Powered-By header                        FALSE
  */
-Kohana::init([
+$_settings = [
 	'base_url'   => '/',
-]);
+	'errors'     => FALSE,
+];
+// Load the Profiler class when profiling is enabled
+// otherwise I get the following error:
+/*
+ Fatal error: Uncaught Error: Class 'Profiler' not found in /app/system/classes/Kohana/Core.php:598 Stack trace: #0 /app/system/classes/Kohana/Core.php(427): Kohana_Core::find_file('classes', 'Kohana/Profiler') #1 [internal function]: Kohana_Core::auto_load('Kohana_Profiler') #2 /app/system/classes/Profiler.php(3): spl_autoload_call('Kohana_Profiler') #3 /app/system/classes/Kohana/Core.php(430): require('/app/system/cla...') #4 [internal function]: Kohana_Core::auto_load('Profiler') #5 /app/system/classes/Kohana/Request/Client/Internal.php(60): spl_autoload_call('Profiler') #6 /app/system/classes/Kohana/Request/Client.php(114): Kohana_Request_Client_Internal->execute_request(Object(Request), Object(Response)) #7 /app/system/classes/Kohana/Request.php(1000): Kohana_Request_Client->execute(Object(Request)) #8 /app/index.php(118): Kohana_Request->execute() #9 {main} thrown in /app/system/classes/Kohana/Core.php on line 598
+ */
+if (!isset($_settings['profile']) || !empty($_settings['profile']))
+{
+    require SYSPATH.'classes/Kohana/Profiler'.EXT;
+    require SYSPATH.'classes/Profiler'.EXT;
+}
+Kohana::init($_settings);
 
 /**
  * Attach the file write to logging. Multiple writers are supported.
@@ -129,13 +141,13 @@ Kohana::$config->attach(new Config_File);
  */
 Kohana::modules([
 	// 'encrypt'    => MODPATH.'encrypt',    // Encryption supprt
-	// 'auth'       => MODPATH.'auth',       // Basic authentication
+	'auth'       => MODPATH.'auth',       // Basic authentication
 	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-	// 'database'   => MODPATH.'database',   // Database access
+	'database'   => MODPATH.'database',   // Database access
 	// 'image'      => MODPATH.'image',      // Image manipulation
 	// 'minion'     => MODPATH.'minion',     // CLI Tasks
-	// 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
+	'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	// 'pagination' => MODPATH.'pagination', // Pagination
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
@@ -148,7 +160,7 @@ Kohana::modules([
  * If you have not defined a cookie salt in your Cookie class then
  * uncomment the line below and define a preferrably long salt.
  */
-// Cookie::$salt = NULL;
+Cookie::$salt = '2139821639u2yhrd3912u';
 /**
  * Cookie HttpOnly directive
  * If set to true, disallows cookies to be accessed from JavaScript
